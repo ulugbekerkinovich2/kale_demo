@@ -153,7 +153,6 @@ class User(models.Model):
 
 
 class Product(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     count = models.CharField(max_length=20, default='0')
