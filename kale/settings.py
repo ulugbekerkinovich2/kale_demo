@@ -112,10 +112,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
 
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    #
+    # ],
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 3600,  # cache timeout in seconds
     'DEFAULT_CACHE_BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     'DEFAULT_FILTER_BACKENDS': (
