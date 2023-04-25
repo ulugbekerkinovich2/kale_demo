@@ -1,0 +1,39 @@
+name: Production Django deploy kale
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: GIT pulling from github repository
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
+        source: "."
+        target: "/home/user/backend/kaleuz"
+    - name: Command using from script
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        envs: DJANGO_SETTINGS_MODULE
+        script_stop: true
+        script: |
+          git --work-tree=/home/user/backend/kaleuz --git-dir=/home/user/backend/kaleuz/.git clean -f .
+          /home/user/backend/kaleuz/venv/bin/pip install -r /home/user/backend/kaleuz/production.txt
+          /home/user/backend/kaleuz/venv/bin/python /home/user/backend/kaleuz/manage.py migrate
+          systemctl restart kale.service
+          sh /home/devops/deploy.sh "${{ github.event.head_commit.message }}" "kaleapi.itlink.uz"
