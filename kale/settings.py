@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
+DEBUG = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q'
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
@@ -17,7 +17,7 @@ import environ
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
 DEBUG = env.bool("DEBUG", True)
-CACHE_TIME = 84600
+# CACHE_TIME = 84600
 # settings.configure()
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 CORS_ALLOWED_ORIGINS = [
@@ -42,7 +42,7 @@ CACHES = {
     }
 }
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
-CACHE_TIME = 10
+CACHE_TIME = 100
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
@@ -255,7 +255,9 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') if DEBUG else env("DJANGO_STATIC")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') if DEBUG else env("DJANGO_MEDIA")
-
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

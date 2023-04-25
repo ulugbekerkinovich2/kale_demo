@@ -157,7 +157,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     count = models.CharField(max_length=20, default='0')
-    code = models.CharField(max_length=15, default='mahsulot kodi kiritilmagan', null=True, blank=True)
+    code = models.CharField(max_length=30, default='mahsulot kodi kiritilmagan', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
     image1 = models.ImageField(upload_to='images/', null=True, blank=True)
