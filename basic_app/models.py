@@ -66,10 +66,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
 
-    def save(self, *args, **kwargs):
-        # Hash the password before saving
-        self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         # Hash the password before saving
+#         self.password = make_password(self.password)
+#         super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.username}'
