@@ -16,7 +16,7 @@ TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 import environ
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
-DEBUG = env.bool("DEBUG", True)
+DEBUG = env.bool("DEBUG", False)
 # CACHE_TIME = 84600
 # settings.configure()
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
@@ -42,7 +42,7 @@ CACHES = {
     }
 }
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
-CACHE_TIME = 100
+CACHE_TIME = 21600
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
