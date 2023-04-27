@@ -101,6 +101,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 31457280
 username = 'kaleapi'
 password = 'kaleapi'
 ROOT_URLCONF = 'kale.urls'
