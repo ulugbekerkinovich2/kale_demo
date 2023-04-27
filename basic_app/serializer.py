@@ -312,7 +312,7 @@ class UserDataSerializer1(serializers.ModelSerializer):
         # exclude = ['best_seller_product']
 
         
- class DiscountSerializer(serializers.ModelSerializer):
+class DiscountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discount
         fields = '__all__'
