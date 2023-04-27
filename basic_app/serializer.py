@@ -310,3 +310,9 @@ class UserDataSerializer1(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'password', 'user_phone']
         # exclude = ['best_seller_product']
+
+        
+ class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = '__all__'
