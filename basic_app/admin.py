@@ -19,7 +19,7 @@ class ProductsAdmin(admin.ModelAdmin):
     # list_filter = ['category']
     list_display = ['id', 'name']
     # list_filter = ['category']
-    list_per_page = 20
+    list_per_page = 3500
 
 
 class CategoryAdmin(admin.ModelAdmin):
