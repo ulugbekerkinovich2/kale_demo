@@ -14,6 +14,7 @@ SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # SECURITY WARNING: don't run with debug turned on in production!
 import environ
+
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
 DEBUG = env.bool("DEBUG", True)
@@ -156,10 +157,9 @@ DATABASES = {
     }
 }
 if DEBUG is False:
-   DATABASES["default"] = env.db("DATABASE_URL")
-   DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
-   DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
-
+    DATABASES["default"] = env.db("DATABASE_URL")
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -250,10 +250,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 #
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
