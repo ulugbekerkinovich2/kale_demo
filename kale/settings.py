@@ -13,7 +13,7 @@ DEBUG = True
 SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q'
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # SECURITY WARNING: don't run with debug turned on in production!
-# import environ
+import environ
 
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
