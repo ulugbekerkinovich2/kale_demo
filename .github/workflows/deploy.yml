@@ -7,7 +7,8 @@ on:
 
 jobs:
   build:
-
+    env:
+        DEBUG: 'False'
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +30,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        envs: DJANGO_SETTINGS_MODULE
+        envs: DEBUG
         script_stop: true
         script: |
           git --work-tree=/home/user/backend/kaleuz --git-dir=/home/user/backend/kaleuz/.git clean -f .
