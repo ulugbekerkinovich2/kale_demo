@@ -33,9 +33,8 @@ urlpatterns = [
     path('register/', views.ListRegister.as_view(), name="register"),
     #     path('user_data/', views.List_UserData.as_view()),
     #     path('user_data/<int:pk>/', views.DetailUserData.as_view()),
-    path('discount/', views.ListDiscount.as_view()),
+    # path('discount/', views.ListDiscount.as_view()),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
 ]
