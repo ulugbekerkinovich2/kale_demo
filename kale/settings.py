@@ -13,13 +13,13 @@ DEBUG = True
 SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q'
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # SECURITY WARNING: don't run with debug turned on in production!
-# import environ
-# env = environ.Env()
-# env.read_env(str(BASE_DIR / ".env"))
-# DEBUG = env.bool("DEBUG", True)
+import environ
+env = environ.Env()
+env.read_env(str(BASE_DIR / ".env"))
+DEBUG = env.bool("DEBUG", True)
 # CACHE_TIME = 84600
 # settings.configure()
-# ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
@@ -42,7 +42,7 @@ CACHES = {
     }
 }
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
-CACHE_TIME = 60
+CACHE_TIME = 600000
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
@@ -101,6 +101,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 31457280
 username = 'kaleapi'
 password = 'kaleapi'
 ROOT_URLCONF = 'kale.urls'
@@ -153,10 +155,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# if DEBUG is False:
-#    DATABASES["default"] = env.db("DATABASE_URL")
-#    DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
-#    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+if DEBUG is False:
+   DATABASES["default"] = env.db("DATABASE_URL")
+   DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+   DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 
 # Password validation
@@ -253,12 +255,17 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') if DEBUG else env("DJANGO_STATIC")
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media') if DEBUG else env("DJANGO_MEDIA")
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') if DEBUG else env("DJANGO_STATIC")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') if DEBUG else env("DJANGO_MEDIA")
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

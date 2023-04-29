@@ -10,7 +10,7 @@ from rest_framework.validators import UniqueValidator
 from kale.settings import BOT_TOKEN, GROUP_CHAT_ID
 from . import models
 from .models import Header_Carusel, Catalog, Category, Best_seller_products, Product, Form, GalleryPhotos1, \
-    GalleryData1, About, CustomUser
+    GalleryData1, About, CustomUser, Discount
 from .models import User
 
 
@@ -310,3 +310,9 @@ class UserDataSerializer1(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'password', 'user_phone']
         # exclude = ['best_seller_product']
+
+        
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = '__all__'

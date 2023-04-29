@@ -704,3 +704,8 @@ class List_UserData(generics.ListCreateAPIView):
 class DetailUserData(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializer.ProductSerializer
+
+    
+class ListDiscount(generics.ListCreateAPIView):
+    queryset = models.Discount.objects.all()
+    serializer_class = serializer.DiscountSerializer
