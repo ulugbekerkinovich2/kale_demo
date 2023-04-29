@@ -322,12 +322,14 @@ class Discount(models.Model):
     phone_number = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
     location = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
     discount_name = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    total_cost = models.IntegerField(default=0)
 
     def __str__(self):
         return f'Ismi: {self.name}\n' \
                f'Telefon raqami: {self.phone_number}\n' \
                f'Manzil: {self.location}\n' \
-               f'Chegirma: {self.discount_name}'
+               f'Chegirma: {self.discount_name}\n' \
+               f'Summa: {self.total_cost}'
 
     class Meta:
         verbose_name_plural = 'Discount'
