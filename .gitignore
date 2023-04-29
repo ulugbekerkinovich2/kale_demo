@@ -103,7 +103,8 @@ venv/
 ENV/ 
 env.bak/ 
 venv.bak/ 
-
+converts.py
+image.jpg
 # mkdocs documentation 
 /site 
 

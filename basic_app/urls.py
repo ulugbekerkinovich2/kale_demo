@@ -28,6 +28,7 @@ urlpatterns = [
     path('products_search/', views.ProductSearch.as_view()),
     path('products_by_category/<int:pk>/', views.DetailProductsByCategory1.as_view()),
     path('products_by_category/', views.ListProductsByCategory1.as_view()),
+    path('products_by_category/', views.ListProductsByCategory122.as_view()),
 
     path('register/', views.ListRegister.as_view(), name="register"),
     path('user_data/', views.List_UserData.as_view()),
