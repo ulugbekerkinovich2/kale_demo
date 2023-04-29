@@ -321,7 +321,6 @@ class DiscountSerializer(serializers.ModelSerializer):
         # Create the object using the validated data
         my_object = Discount.objects.create(**validated_data)
 
-        # Send a message to the Telegram group
         message = f"New Users: \n\n{my_object}"
         telebot(message)
         return my_object
