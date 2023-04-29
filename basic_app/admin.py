@@ -50,6 +50,7 @@ class GallerPhotosAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.CustomUser)
+admin.site.register(models.Orders)
 admin.site.register(models.Discount)
 admin.site.register(models.Header_Carusel, Header_CaruselAdmin)
 admin.site.register(models.Category, CategoryAdmin)

@@ -333,3 +333,16 @@ class Discount(models.Model):
 
     class Meta:
         verbose_name_plural = 'Discount'
+
+
+class Orders(models.Model):
+    name = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    phone_number = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    location = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    total_cost = models.IntegerField(default=0, null=True, blank=True)
+
+    def __str__(self):
+        return f"Ismi: {self.name}\n" \
+               f"Telefon raqami: {self.phone_number}\n" \
+               f"Manzili: {self.location}\n" \
+               f"Umumiy narxi: {self.total_cost}"
