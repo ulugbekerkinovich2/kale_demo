@@ -10,8 +10,7 @@ from rest_framework.validators import UniqueValidator
 from kale.settings import BOT_TOKEN, GROUP_CHAT_ID
 from . import models
 from .models import Header_Carusel, Catalog, Category, Best_seller_products, Product, Form, GalleryPhotos1, \
-    GalleryData1, About, CustomUser
-    # Discount
+    GalleryData1, About, CustomUser, Discount
 from .models import User
 
 
@@ -313,16 +312,16 @@ class UserDataSerializer1(serializers.ModelSerializer):
         # exclude = ['best_seller_product']
 
 
-# class DiscountSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Discount
-#         fields = '__all__'
-#
-#     def create(self, validated_data):
-#         # Create the object using the validated data
-#         my_object = Discount.objects.create(**validated_data)
-#
-#         # Send a message to the Telegram group
-#         message = f"New User: \n\n{my_object}"
-#         telebot(message)
-#         return my_object
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = '__all__'
+
+    def create(self, validated_data):
+        # Create the object using the validated data
+        my_object = Discount.objects.create(**validated_data)
+
+        # Send a message to the Telegram group
+        message = f"New User: \n\n{my_object}"
+        telebot(message)
+        return my_object
