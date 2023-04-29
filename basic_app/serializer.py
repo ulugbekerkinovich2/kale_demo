@@ -311,17 +311,3 @@ class UserDataSerializer1(serializers.ModelSerializer):
         fields = ['id', 'username', 'password', 'user_phone']
         # exclude = ['best_seller_product']
 
-
-# class DiscountSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Discount
-#         fields = '__all__'
-#
-#     def create(self, validated_data):
-#         # Create the object using the validated data
-#         my_object = Discount.objects.create(**validated_data)
-#
-#         # Send a message to the Telegram group
-#         message = f"New User: \n\n{my_object}"
-#         telebot(message)
-#         return my_object
