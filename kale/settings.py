@@ -14,7 +14,6 @@ SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # SECURITY WARNING: don't run with debug turned on in production!
 import environ
-
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
 DEBUG = env.bool("DEBUG", True)
@@ -262,7 +261,7 @@ MEDIA_URL = '/media/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

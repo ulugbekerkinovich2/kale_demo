@@ -492,6 +492,7 @@ class ListProductsByCategory1(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         cache_key = "products_by_category:all"
         data_all = cache.get(cache_key)
+        data_all = cache.get(cache_key)
         if data_all is not None:
             # Data is available in cache, return it
             return Response(data_all)
@@ -705,7 +706,7 @@ class DetailUserData(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializer.ProductSerializer
 
-    
+
 class ListDiscount(generics.ListCreateAPIView):
     queryset = models.Discount.objects.all()
     serializer_class = serializer.DiscountSerializer
