@@ -322,7 +322,7 @@ class Discount(models.Model):
     phone_number = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
     location = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
     discount_name = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
-    total_cost = models.IntegerField(default=0)
+    total_cost = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f"Ismi: {self.name}\n" \
