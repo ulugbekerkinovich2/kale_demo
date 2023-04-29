@@ -707,6 +707,6 @@ class DetailUserData(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializer.ProductSerializer
 
 
-class ListDiscount(generics.ListCreateAPIView):
-    queryset = models.Discount.objects.all()
-    serializer_class = serializer.DiscountSerializer
+# class ListDiscount(generics.ListCreateAPIView):
+#     queryset = models.Discount.objects.all()
+#     serializer_class = serializer.DiscountSerializer
