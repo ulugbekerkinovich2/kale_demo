@@ -1,6 +1,7 @@
 import requests
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework import filters, viewsets
 from rest_framework import generics
@@ -761,3 +762,53 @@ class ChatMessageViewSet(viewsets.ModelViewSet):
 class ListBaraban(generics.ListAPIView):
     queryset = models.BarabanDiscount.objects.all()
     serializer_class = serializer.BarabanDiscountSerializer
+
+
+class ProductsByCategoryView(APIView):
+    def get(self, request, *args, **kwargs):
+        products = None
+        category_name = kwargs.get('category_name')
+        price_filter = kwargs.get('price')
+
+        if category_name:
+            try:
+                category = Category.objects.get(name_en=category_name)
+                products = category.product_set.all()
+            except Category.DoesNotExist:
+                return JsonResponse({'error': f'Category {category_name} does not exist.'}, status=404)
+        else:
+            products = Product.objects.all()
+
+        if price_filter == 'max':
+            products = products.filter(price__gte='2000000')
+        elif price_filter == 'min':
+            products = products.filter(price__lt='2000000')
+
+        # group products by category
+        categories_data = {}
+        for product in products:
+            category_name = product.category.name_ru
+            if category_name not in categories_data:
+                categories_data[category_name] = []
+            categories_data[category_name].append({
+                'name_uz': product.name_uz,
+                'name_en': product.name_en,
+                'name_ru': product.name_ru,
+                'description_uz': product.description_uz,
+                'description_en': product.description_en,
+                'description_ru': product.description_ru,
+                'count': product.count,
+                'code': product.code,
+                'price': str(product.price),
+                'image1': product.image1.url if product.image1 else None,
+                'image2': product.image2.url if product.image2 else None,
+                'image3': product.image3.url if product.image3 else None,
+                'image4': product.image4.url if product.image4 else None,
+                'image5': product.image5.url if product.image5 else None,
+                'korzinka': product.korzinka,
+                'saralangan': product.saralangan,
+                'solishtirsh': product.solishtirsh,
+                'best_seller_product': product.best_seller_product,
+            })
+
+        return JsonResponse(categories_data, safe=False)

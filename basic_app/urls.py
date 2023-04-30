@@ -4,7 +4,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from basic_app import views
-from basic_app.views import ListHeaderCarousel, ListBestSeller
+from basic_app.views import ListHeaderCarousel, ListBestSeller, ProductsByCategoryView
 
 urlpatterns = [
     path('gallery/', views.ListGalleryData1.as_view()),
@@ -33,6 +33,8 @@ urlpatterns = [
     path('discount/', views.ListDiscount.as_view()),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('products/<str:price>/', ProductsByCategoryView.as_view(), name='product-by-price'),
 
 ]
 if settings.DEBUG:

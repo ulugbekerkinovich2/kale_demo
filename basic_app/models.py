@@ -154,7 +154,7 @@ class Category(models.Model):
     name_en = models.CharField(max_length=255, default='none', null=True, blank=True)
 
     def __str__(self):
-        return self.name_ru
+        return f"{self.name_ru}-{self.name_en}-{self.name_uz}"
 
 
 # class User(models.Model):
@@ -190,7 +190,7 @@ class Product(models.Model):
     best_seller_product = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name_en
+        return self.name_ru
 
 
 class Form(models.Model):
