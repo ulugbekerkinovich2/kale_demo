@@ -154,7 +154,7 @@ class Category(models.Model):
     name_en = models.CharField(max_length=255, default='none', null=True, blank=True)
 
     def __str__(self):
-        return self.name_en
+        return self.name_ru
 
 
 # class User(models.Model):
