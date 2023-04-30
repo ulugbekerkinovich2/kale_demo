@@ -17,8 +17,6 @@ import environ
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
 DEBUG = env.bool("DEBUG", True)
-# CACHE_TIME = 84600
-# settings.configure()
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
@@ -42,7 +40,7 @@ CACHES = {
     }
 }
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
-CACHE_TIME = 30
+CACHE_TIME = 60
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition

@@ -493,8 +493,9 @@ class ListProductsByCategory1(generics.ListAPIView):
         cache_key = "products_by_category:all"
         data_all = cache.get(cache_key)
         if data_all is not None:
-            # Data is available in cache, return it
-            return Response(data_all)
+            # Sort the data by -id and return it
+            sorted_data = sorted(data_all, key=lambda x: x['id'], reverse=True)
+            return Response(sorted_data)
 
         # Data is not available in cache, fetch it from API or database
         response = requests.get(url, auth=(username, password), params={'sort_by': '-id'})
