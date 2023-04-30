@@ -28,7 +28,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5174',
     'http://localhost:5175',
     'http://localhost:5172',
-    'http://localhost:5172',
 ]
 BOT_TOKEN = '6297432745:AAE4FSv-KU5Ury2cuAJ5mwQvY-yMFiuM4vs'
 GROUP_CHAT_ID = '-1001867869015'
