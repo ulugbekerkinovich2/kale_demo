@@ -4,7 +4,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from basic_app import views
-from basic_app.views import BestSellerProductsList1, ListHeaderCarousel, ListBestSeller
+from basic_app.views import ListHeaderCarousel, ListBestSeller
 
 urlpatterns = [
     path('gallery/', views.ListGalleryData1.as_view()),
@@ -22,12 +22,12 @@ urlpatterns = [
     path('category/', views.ListCategory.as_view()),
     path('works_kale/', views.ListWorksByKale.as_view()),
     path('location/', views.ListLocation.as_view()),
-    path('sub_category_products/', views.ListSubCategory.as_view()),
+    # path('sub_category_products/', views.ListSubCategory.as_view()),
     path('header/', ListHeaderCarousel.as_view(), name='header_carousel_list'),
     path('best_seller/', ListBestSeller.as_view(), name='best_seller_products_count'),
     path('products_search/', views.ProductSearch.as_view()),
     path('products_by_category/<int:pk>/', views.DetailProductsByCategory1.as_view()),
-    # path('products_by_category/', views.ListProductsByCategory1.as_view()),
+    path('baraban/', views.ListBaraban.as_view()),
     path('products_by_category/', views.ListProductsByCategoryName.as_view()),
     path('orders/', views.ListOrders.as_view()),
     path('discount/', views.ListDiscount.as_view()),

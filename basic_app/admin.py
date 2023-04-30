@@ -8,39 +8,39 @@ from basic_app.models import Best_seller_products
 
 
 class Best_SellerAdmin(admin.ModelAdmin):
-    search_fields = ['name']
+    # search_fields = ['name']
     # list_filter = ['name', 'best_seller_product']
-    list_display = ['id', 'name']
+    list_display = ['id']
     list_per_page = 500
 
 
 class ProductsAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'code']
+    search_fields = ['code']
     # list_filter = ['category']
-    list_display = ['id', 'name']
+    list_display = ['id']
     # list_filter = ['category']
     list_per_page = 20
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    search_fields = ['id', 'name']
+    search_fields = ['id']
     # list_filter = ['name']
     # list_filter = ['name']
-    list_display = ['id', 'name']
+    list_display = ['id']
     list_per_page = 10
 
 
 class Header_CaruselAdmin(admin.ModelAdmin):
-    search_fields = ['id', 'nomi']
+    # search_fields = ['id', 'nomi']
     # list_filter = ['nomi']
     # list_filter = ['nomi']
-    list_display = ['id', 'nomi']
+    list_display = ['id']
     list_per_page = 10
 
 
 class GalleryDataAdmin(admin.ModelAdmin):
-    search_fields = ['id', 'title']
-    list_display = ['id', 'title']
+    search_fields = ['id']
+    list_display = ['id']
     list_per_page = 10
 
 
@@ -66,6 +66,5 @@ admin.site.register(models.Gallery_News)
 admin.site.register(models.SocialNetworks)
 admin.site.register(models.Location)
 admin.site.register(models.WorksByKale)
-admin.site.register(models.CategoryProduct)
-admin.site.register(models.SubCategory)
 admin.site.register(models.About)
+admin.site.register(models.BarabanDiscount)

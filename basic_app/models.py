@@ -11,11 +11,15 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 #
 class About(models.Model):
     image = models.ImageField(upload_to='products/')
-    title = models.CharField(max_length=255, null=True, blank=True)
-    text = models.TextField(blank=True, null=True, default='matn kiritilmagan')
+    title_uz = models.CharField(max_length=255, null=True, blank=True)
+    title_ru = models.CharField(max_length=255, null=True, blank=True)
+    title_en = models.CharField(max_length=255, null=True, blank=True)
+    text_uz = models.TextField(blank=True, null=True, default='matn kiritilmagan')
+    text_ru = models.TextField(blank=True, null=True, default='matn kiritilmagan')
+    text_en = models.TextField(blank=True, null=True, default='matn kiritilmagan')
 
     def __str__(self):
-        return self.title
+        return self.title_en
 
     def url(self):
         if self.image:
@@ -75,24 +79,30 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f'{self.username}'
 
 
-class Catalog(models.Model):
-    name = models.TextField(blank=False, verbose_name='catalog_name')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = 'catalog'
-        verbose_name_plural = 'catalog'
+# class Catalog(models.Model):
+#     name_uz = models.TextField(blank=False, verbose_name='catalog_name', default='name is not defined')
+#     name_ru = models.TextField(blank=False, verbose_name='catalog_name', default='name is not defined')
+#     name_en = models.TextField(blank=False, verbose_name='catalog_name', default='name is not defined')
+#
+#     def __str__(self):
+#         return self.name_en
+#
+#     class Meta:
+#         db_table = 'catalog'
+#         verbose_name_plural = 'catalog'
 
 
 class Header_Carusel(models.Model):
-    nomi = models.CharField(max_length=200, default='none', null=True, blank=True)
-    text = models.TextField(default='none', null=True, blank=True)
+    nomi_uz = models.CharField(max_length=200, default='none', null=True, blank=True)
+    nomi_en = models.CharField(max_length=200, default='none', null=True, blank=True)
+    nomi_ru = models.CharField(max_length=200, default='none', null=True, blank=True)
+    text_uz = models.TextField(default='none', null=True, blank=True)
+    text_ru = models.TextField(default='none', null=True, blank=True)
+    text_en = models.TextField(default='none', null=True, blank=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
-        return f'ID: {self.id}    {self.nomi}'
+        return f'ID: {self.id}    {self.nomi_ru}'
 
     def image_url(self):
         urls = []
@@ -105,8 +115,12 @@ class Header_Carusel(models.Model):
 
 
 class Best_seller_products(models.Model):
-    name = models.CharField(max_length=300)
-    description = models.TextField()
+    name_uz = models.CharField(max_length=300, default='nomi kiritilmagan', null=True, blank=True)
+    name_ru = models.CharField(max_length=300, default='nomi kiritilmagan', null=True, blank=True)
+    name_en = models.CharField(max_length=300, default='nomi kiritilmagan', null=True, blank=True)
+    description_uz = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    description_ru = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    description_en = models.TextField(default='matn kiritilmagan', null=True, blank=True)
     code = models.CharField(max_length=300, null=True, blank=True)
     image_1 = models.ImageField(upload_to='best_seller_images/', null=True, blank=True)
     image_2 = models.ImageField(upload_to='best_seller_images/', null=True, blank=True)
@@ -119,7 +133,7 @@ class Best_seller_products(models.Model):
     best_seller_product = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.name_ru
 
     def image_urls(self, request):
         urls = []
@@ -135,26 +149,32 @@ class Best_seller_products(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name_uz = models.CharField(max_length=255, default='none', null=True, blank=True)
+    name_ru = models.CharField(max_length=255, default='none', null=True, blank=True)
+    name_en = models.CharField(max_length=255, default='none', null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name_en
 
 
-class User(models.Model):
-    username = models.CharField(max_length=255, null=False)
-    phone_number = models.CharField(max_length=255, null=False)
-    password = models.CharField(max_length=50)
-    ifLogged = models.BooleanField(default=False)
-    token = models.CharField(max_length=500, null=True, default="")
-
-    def __str__(self):
-        return self.phone_number
+# class User(models.Model):
+#     username = models.CharField(max_length=255, null=False)
+#     phone_number = models.CharField(max_length=255, null=False)
+#     password = models.CharField(max_length=50)
+#     ifLogged = models.BooleanField(default=False)
+#     token = models.CharField(max_length=500, null=True, default="")
+#
+#     def __str__(self):
+#         return self.phone_number
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    name_uz = models.CharField(max_length=255, null=True, blank=True)
+    name_en = models.CharField(max_length=255, null=True, blank=True)
+    name_ru = models.CharField(max_length=255, null=True, blank=True)
+    description_uz = models.TextField(null=True, blank=True)
+    description_en = models.TextField(null=True, blank=True)
+    description_ru = models.TextField(null=True, blank=True)
     count = models.CharField(max_length=20, default='0')
     code = models.CharField(max_length=30, default='mahsulot kodi kiritilmagan', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
@@ -170,7 +190,7 @@ class Product(models.Model):
     best_seller_product = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.name_en
 
 
 class Form(models.Model):
@@ -196,12 +216,16 @@ class GalleryPhotos1(models.Model):
 
 
 class GalleryData1(models.Model):
-    title = models.TextField(default='matn kiritilmagan', null=True, blank=True)
-    text = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    title_uz = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    title_en = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    title_ru = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_uz = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_en = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_ru = models.TextField(default='matn kiritilmagan', null=True, blank=True)
     image = models.ManyToManyField(GalleryPhotos1)
 
     def __str__(self):
-        return self.title
+        return self.title_ru
 
     class Meta:
         verbose_name_plural = 'Gallery_data'
@@ -241,17 +265,21 @@ class Partners(models.Model):
 
 
 class Gallery_News(models.Model):
-    title = models.CharField(max_length=512, default='matn kiritilmagan')
-    text = models.TextField(default='matn kiritilmagan')
+    title_uz = models.CharField(max_length=512, default='matn kiritilmagan')
+    title_ru = models.CharField(max_length=512, default='matn kiritilmagan')
+    title_en = models.CharField(max_length=512, default='matn kiritilmagan')
+    text_uz = models.TextField(default='matn kiritilmagan')
+    text_ru = models.TextField(default='matn kiritilmagan')
+    text_en = models.TextField(default='matn kiritilmagan')
     img = models.ImageField(upload_to='images/')
     time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} - {self.time.strftime('%d.%m.%Y') if self.time else 'no time set'}"
+        return f"{self.title_ru} - {self.time.strftime('%d.%m.%Y') if self.time else 'no time set'}"
 
     class Meta:
-        verbose_name = 'Gallery News'
-        verbose_name_plural = 'Gallery News'
+        verbose_name = 'Gallery_News'
+        verbose_name_plural = 'Gallery_News'
 
 
 class SocialNetworks(models.Model):
@@ -273,48 +301,58 @@ class SocialNetworks(models.Model):
 
 
 class Location(models.Model):
-    title = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
-    text = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    title_uz = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    title_en = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    title_ru = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    text_uz = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_ru = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_en = models.TextField(default='matn kiritilmagan', null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.title_ru
 
     class Meta:
         verbose_name_plural = 'Location'
 
 
 class WorksByKale(models.Model):
-    title = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
-    text = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    title_uz = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    title_ru = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    title_en = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    text_uz = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_ru = models.TextField(default='matn kiritilmagan', null=True, blank=True)
+    text_en = models.TextField(default='matn kiritilmagan', null=True, blank=True)
     image1 = models.ImageField(upload_to='images/', null=True, blank=True)
     image2 = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.title_ru
 
     class Meta:
         verbose_name_plural = 'Works_By_Kale'
 
 
-class CategoryProduct(models.Model):
-    name = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+# class CategoryProduct(models.Model):
+#     name_uz = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+#     name_en = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+#     name_ru = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+#
+#     def __str__(self):
+#         return self.name_en
+#
+#     class Meta:
+#         verbose_name_plural = 'Category_Product'
 
-    def __str__(self):
-        return self.name
 
-    class Meta:
-        verbose_name_plural = 'Category_Product'
-
-
-class SubCategory(models.Model):
-    category = models.ForeignKey(CategoryProduct, on_delete=models.CASCADE)
-    sub_category = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
-
-    def __str__(self):
-        return self.sub_category
-
-    class Meta:
-        verbose_name_plural = 'Sub_Category'
+# class SubCategory(models.Model):
+#     category = models.ForeignKey(CategoryProduct, on_delete=models.CASCADE)
+#     sub_category = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+#
+#     def __str__(self):
+#         return self.sub_category
+#
+#     class Meta:
+#         verbose_name_plural = 'Sub_Category'
 
 
 class Discount(models.Model):
@@ -335,6 +373,18 @@ class Discount(models.Model):
         verbose_name_plural = 'Discount'
 
 
+class BarabanDiscount(models.Model):
+    name_uz = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    name_ru = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+    name_en = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
+
+    def __str__(self):
+        return self.name_ru
+
+    class Meta:
+        verbose_name_plural = 'Baraban_Discount'
+
+
 class Orders(models.Model):
     name = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
     phone_number = models.CharField(max_length=512, default='matn kiritilmagan', null=True, blank=True)
@@ -346,3 +396,20 @@ class Orders(models.Model):
                f"Telefon raqami: {self.phone_number}\n" \
                f"Manzili: {self.location}\n" \
                f"Umumiy narxi: {self.total_cost}"
+
+
+class ChatRoom(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class ChatMessage(models.Model):
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    message = models.TextField()
+    sender = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.room)

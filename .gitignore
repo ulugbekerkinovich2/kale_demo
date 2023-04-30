@@ -117,9 +117,9 @@ converts.py
 *.sublime-workspace 
 *.sublime-project 
 .idea
-# sftp configuration file 
+# sftp configuration file
 sftp-config.json 
-
+media
 # Package control specific files Package 
 Control.last-run 
 Control.ca-list 

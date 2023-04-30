@@ -2,7 +2,7 @@ import requests
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.shortcuts import redirect
-from rest_framework import filters
+from rest_framework import filters, viewsets
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,11 +12,10 @@ from rest_framework.views import APIView
 from kale import settings
 from kale.settings import username, password
 from . import models, serializer
-from .models import Best_seller_products, Category, Product
+from .models import Best_seller_products, Category, Product, ChatRoom, ChatMessage
 from .models import Header_Carusel
-from .models import User
-from .serializer import HeaderCaruselSerializer, BestSellerProductSerializer, InfoGrafikaSerializer
-from .serializer import UserSerializer, UserLoginSerializer, UserLogoutSerializer
+from .serializer import HeaderCaruselSerializer, BestSellerProductSerializer, InfoGrafikaSerializer, ChatRoomSerializer, \
+    ChatMessageSerializer
 
 obj = []
 
@@ -129,131 +128,131 @@ class ListHeaderCarousel(generics.ListAPIView):
     serializer_class = HeaderCaruselSerializer
 
 
-class BestSellerProductsList1(APIView):
-    def get(self, request, id=None, count=None):
-        cache_key = 'best_seller_data1'
+# class BestSellerProductsList1(APIView):
+#     def get(self, request, id=None, count=None):
+#         cache_key = 'best_seller_data1'
+#
+#         # Try to retrieve data from cache
+#         headers = cache.get(cache_key)
+#
+#         if headers is None:
+#             response = requests.get(url, auth=(username, password))
+#             json_data = response.json()
+#             data = json_data['Товары']
+#
+#             # Save data to the model if it doesn't exist
+#             for item in data:
+#                 nomi = item['Наименование']
+#                 text = item['Описание']
+#                 kodi = item['Код']
+#                 if not Best_seller_products.objects.filter(name=nomi, description=text, code=kodi).exists():
+#                     header = Best_seller_products(name=nomi, description=text, code=kodi)
+#                     header.save()
+#             headers = Best_seller_products.objects.all().order_by('-id')
+#             # latest_products = Best_seller_products.objects.filter(name=OuterRef('name')).order_by('-id')
+#
+#             # Best_seller_products.objects.annotate(
+#             #     latest_id=Subquery(latest_products.values('id')[:1])).exclude(id=F('latest_id')).delete()
+#             cache.set(cache_key, headers, timeout=settings.CACHE_TIME)
+#         if id:
+#             for header in headers:
+#                 if header.id == id:
+#                     headers = [header]
+#                     break
+#
+#
+#         # Get data by count if count parameter is provided
+#         elif count:
+#             headers = headers[:count]
+#
+#         serializer = BestSellerProductSerializer(headers, many=True, context={'request': request})
+#         return Response(serializer.data)
 
-        # Try to retrieve data from cache
-        headers = cache.get(cache_key)
 
-        if headers is None:
-            response = requests.get(url, auth=(username, password))
-            json_data = response.json()
-            data = json_data['Товары']
-
-            # Save data to the model if it doesn't exist
-            for item in data:
-                nomi = item['Наименование']
-                text = item['Описание']
-                kodi = item['Код']
-                if not Best_seller_products.objects.filter(name=nomi, description=text, code=kodi).exists():
-                    header = Best_seller_products(name=nomi, description=text, code=kodi)
-                    header.save()
-            headers = Best_seller_products.objects.all().order_by('-id')
-            # latest_products = Best_seller_products.objects.filter(name=OuterRef('name')).order_by('-id')
-
-            # Best_seller_products.objects.annotate(
-            #     latest_id=Subquery(latest_products.values('id')[:1])).exclude(id=F('latest_id')).delete()
-            cache.set(cache_key, headers, timeout=settings.CACHE_TIME)
-        if id:
-            for header in headers:
-                if header.id == id:
-                    headers = [header]
-                    break
-
-
-        # Get data by count if count parameter is provided
-        elif count:
-            headers = headers[:count]
-
-        serializer = BestSellerProductSerializer(headers, many=True, context={'request': request})
-        return Response(serializer.data)
-
-
-@api_view(['GET'])
-def products_by_category3_(request):
-    count = request.GET.get('count')
-    # latest_products = Product.objects.filter(name=OuterRef('name')).order_by('-id')
-    #
-    # # Delete all products that are not the latest one with a given name
-    # Product.objects.annotate(latest_id=Subquery(latest_products.values('id')[:1])).exclude(id=F('latest_id')).delete()
-    cache_key_all = "products_by_category:all"
-    data_all = cache.get(cache_key_all)
-
-    # If data is not found in cache, fetch from API
-    if data_all is None:
-        response = requests.get(url, auth=(username, password))
-        if response.status_code != 200:
-            return Response({'error': 'Failed to fetch data from API'})
-
-        # Process the JSON data and create Category and Product objects
-        json_data = response.json()
-        products_data = json_data.get('Товары', [])
-        categories = {}
-        for product_data in products_data:
-            category_name = product_data.get('Категория', '').strip()
-            if category_name:
-                categories[category_name] = categories.get(category_name, []) + [product_data]
-        products = []
-        for category_name, products_data in categories.items():
-            category, created = Category.objects.get_or_create(name=category_name)
-            for product_data in products_data:
-                product = Product(name=product_data['Наименование'],
-                                  description=product_data['Описание'],
-                                  price=product_data['Цена'],
-                                  category=category,
-                                  image1=product_data.get('image1', 'None'),
-                                  image2=product_data.get('image2', 'None'),
-                                  image3=product_data.get('image3', 'None'),
-                                  image4=product_data.get('image4', 'None'),
-                                  image5=product_data.get('image5', 'None'),
-                                  korzinka=product_data.get('korzinka', False),
-                                  saralangan=product_data.get('saralangan', False),
-                                  solishtirsh=product_data.get('solishtirsh', False),
-                                  best_seller_product=product_data.get('best_seller_product', False))
-                products.append(product)
-        Product.objects.bulk_create(products)
-        products = Product.objects.select_related('category').all()
-        data_all = {}
-        for product in products:
-            category_name = product.category.name
-            product_data = {
-                'id': product.id,
-                'name': product.name,
-                'description': product.description,
-                'price': product.price,
-                'image1': product.image1.url if product.image1 else 'None',
-                'image2': product.image2.url if product.image2 else 'None',
-                'image3': product.image3.url if product.image3 else 'None',
-                'image4': product.image4.url if product.image4 else 'None',
-                'image5': product.image5.url if product.image5 else 'None',
-                'korzinka': product.korzinka,
-                'saralangan': product.saralangan,
-                'solishtirsh': product.solishtirsh,
-                'best_seller_product': product.best_seller_product
-            }
-            data_all[category_name] = data_all.get(category_name, []) + [product_data]
-
-        # Cache the data for future requests
-        cache.set(cache_key_all, data_all, timeout=settings.CACHE_TIME)
-
-    # Check if cache for filtered data exists and return if found
-    if count:
-        cache_key = f"products_by_category:{count}"
-        data = cache.get(cache_key)
-        if data is not None:
-            return Response(data)
-
-        # Filter data by count if cache not found
-        data = {}
-        for category_name, products_data in data_all.items():
-            data[category_name] = data_all[category_name][:int(count)]
-            # Cache the filtered data
-            cache.set(cache_key, data, timeout=settings.CACHE_TIME)
-
-        return Response(data)
-
-    return Response(data_all)
+# @api_view(['GET'])
+# def products_by_category3_(request):
+#     count = request.GET.get('count')
+#     # latest_products = Product.objects.filter(name=OuterRef('name')).order_by('-id')
+#     #
+#     # # Delete all products that are not the latest one with a given name
+#     # Product.objects.annotate(latest_id=Subquery(latest_products.values('id')[:1])).exclude(id=F('latest_id')).delete()
+#     cache_key_all = "products_by_category:all"
+#     data_all = cache.get(cache_key_all)
+#
+#     # If data is not found in cache, fetch from API
+#     if data_all is None:
+#         response = requests.get(url, auth=(username, password))
+#         if response.status_code != 200:
+#             return Response({'error': 'Failed to fetch data from API'})
+#
+#         # Process the JSON data and create Category and Product objects
+#         json_data = response.json()
+#         products_data = json_data.get('Товары', [])
+#         categories = {}
+#         for product_data in products_data:
+#             category_name = product_data.get('Категория', '').strip()
+#             if category_name:
+#                 categories[category_name] = categories.get(category_name, []) + [product_data]
+#         products = []
+#         for category_name, products_data in categories.items():
+#             category, created = Category.objects.get_or_create(name=category_name)
+#             for product_data in products_data:
+#                 product = Product(name=product_data['Наименование'],
+#                                   description=product_data['Описание'],
+#                                   price=product_data['Цена'],
+#                                   category=category,
+#                                   image1=product_data.get('image1', 'None'),
+#                                   image2=product_data.get('image2', 'None'),
+#                                   image3=product_data.get('image3', 'None'),
+#                                   image4=product_data.get('image4', 'None'),
+#                                   image5=product_data.get('image5', 'None'),
+#                                   korzinka=product_data.get('korzinka', False),
+#                                   saralangan=product_data.get('saralangan', False),
+#                                   solishtirsh=product_data.get('solishtirsh', False),
+#                                   best_seller_product=product_data.get('best_seller_product', False))
+#                 products.append(product)
+#         Product.objects.bulk_create(products)
+#         products = Product.objects.select_related('category').all()
+#         data_all = {}
+#         for product in products:
+#             category_name = product.category.name
+#             product_data = {
+#                 'id': product.id,
+#                 'name': product.name,
+#                 'description': product.description,
+#                 'price': product.price,
+#                 'image1': product.image1.url if product.image1 else 'None',
+#                 'image2': product.image2.url if product.image2 else 'None',
+#                 'image3': product.image3.url if product.image3 else 'None',
+#                 'image4': product.image4.url if product.image4 else 'None',
+#                 'image5': product.image5.url if product.image5 else 'None',
+#                 'korzinka': product.korzinka,
+#                 'saralangan': product.saralangan,
+#                 'solishtirsh': product.solishtirsh,
+#                 'best_seller_product': product.best_seller_product
+#             }
+#             data_all[category_name] = data_all.get(category_name, []) + [product_data]
+#
+#         # Cache the data for future requests
+#         cache.set(cache_key_all, data_all, timeout=settings.CACHE_TIME)
+#
+#     # Check if cache for filtered data exists and return if found
+#     if count:
+#         cache_key = f"products_by_category:{count}"
+#         data = cache.get(cache_key)
+#         if data is not None:
+#             return Response(data)
+#
+#         # Filter data by count if cache not found
+#         data = {}
+#         for category_name, products_data in data_all.items():
+#             data[category_name] = data_all[category_name][:int(count)]
+#             # Cache the filtered data
+#             cache.set(cache_key, data, timeout=settings.CACHE_TIME)
+#
+#         return Response(data)
+#
+#     return Response(data_all)
 
 
 class ListCategory(generics.ListAPIView):
@@ -278,22 +277,22 @@ class ListForm(generics.ListCreateAPIView):
     serializer_class = serializer.FormSerializer
 
 
-class ListGalleryData1(generics.ListCreateAPIView):
+class ListGalleryData1(generics.ListAPIView):
     queryset = models.GalleryData1.objects.all()
     serializer_class = serializer.GalleryDataSerializer
 
 
-class DetailGalleryData1(generics.RetrieveUpdateDestroyAPIView):
+class DetailGalleryData1(generics.RetrieveAPIView):
     queryset = models.GalleryData1.objects.all()
     serializer_class = serializer.GalleryDataSerializer
 
 
-class ListGalleryPhotos1(generics.ListCreateAPIView):
+class ListGalleryPhotos1(generics.ListAPIView):
     queryset = models.GalleryPhotos1.objects.all()
     serializer_class = serializer.GalleryPhotosSerializer
 
 
-class DetailGalleryPhotos1(generics.RetrieveUpdateDestroyAPIView):
+class DetailGalleryPhotos1(generics.RetrieveAPIView):
     queryset = models.GalleryPhotos1.objects.all()
     serializer_class = serializer.GalleryPhotosSerializer
 
@@ -648,59 +647,6 @@ class ListLocation(generics.ListAPIView):
     serializer_class = serializer.LocationSerializer
 
 
-class ListCategoryProduct(generics.ListAPIView):
-    queryset = models.CategoryProduct.objects.all()
-    serializer_class = serializer.CategoryProductSerializer
-
-
-class ListSubCategory(generics.ListAPIView):
-    queryset = models.SubCategory.objects.all()
-    serializer_class = serializer.SubCategoryProductSerializer
-
-
-class Record(generics.ListCreateAPIView):
-    # get method handler
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class Login(generics.GenericAPIView):
-    # get method handler
-    queryset = User.objects.all()
-    serializer_class = UserLoginSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer_class = UserLoginSerializer(data=request.data)
-        if serializer_class.is_valid(raise_exception=True):
-            return Response(serializer_class.data, status=HTTP_200_OK)
-        return Response(serializer_class.errors, status=HTTP_400_BAD_REQUEST)
-
-
-class Logout(generics.GenericAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserLogoutSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer_class = UserLogoutSerializer(data=request.data)
-        if serializer_class.is_valid(raise_exception=True):
-            return Response(serializer_class.data, status=HTTP_200_OK)
-        return Response(serializer_class.errors, status=HTTP_400_BAD_REQUEST)
-
-
-def index(request):
-    return redirect('/api/login')
-
-
-class ListRegister(generics.ListCreateAPIView):
-    queryset = models.CustomUser.objects.all()
-    serializer_class = serializer.UserDataSerializer1
-
-
-class DetailUserData(generics.RetrieveUpdateDestroyAPIView):
-    queryset = models.CustomUser.objects.all()
-    serializer_class = serializer.UserDataSerializer1
-
-
 class List_UserData(generics.ListCreateAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializer.ProductSerializer
@@ -755,17 +701,17 @@ class ListProductsByCategoryName(generics.ListAPIView):
         for product_data in products_data:
             category_name = product_data.get('Категория', '').strip()
             if category_name:
-                name_category = Category.objects.filter(name=category_name)
+                name_category = Category.objects.filter(name_ru=category_name)
                 if name_category.exists():
                     category = name_category.first()
                 else:
-                    category = Category.objects.create(name=category_name)
+                    category = Category.objects.create(name_ru=category_name)
                 product_name = product_data.get('Наименование')
                 try:
-                    category = Product.objects.get(name=product_name, category=category)
+                    category = Product.objects.get(name_ru=product_name, category=category)
                 except ObjectDoesNotExist:
-                    product = Product(name=product_name,
-                                      description=product_data['Описание'],
+                    product = Product(name_ru=product_name,
+                                      description_ru=product_data['Описание'],
                                       price=product_data['Цена'],
                                       category=category,
                                       code=product_data['Код'],
@@ -784,14 +730,14 @@ class ListProductsByCategoryName(generics.ListAPIView):
                     pass
 
         # Bulk create the Product objects
-        products_sorted = sorted(products, key=lambda p: p.id, reverse=True)
-        Product.objects.bulk_create(products_sorted)
+        # products_sorted = sorted(products, key=lambda p: p.id, reverse=True)
+        Product.objects.bulk_create(products)
 
         # Retrieve the Product queryset from the database and group the data by category name
         queryset = Product.objects.all().order_by('-id')
         sorted_data = {}
         for item in queryset:
-            category_name = item.category.name
+            category_name = item.category.name_ru
             if category_name not in sorted_data:
                 sorted_data[category_name] = []
             serializer_ = self.get_serializer(item)
@@ -800,3 +746,18 @@ class ListProductsByCategoryName(generics.ListAPIView):
         # Store the serialized data in cache and return it
         cache.set(cache_key, sorted_data, timeout=settings.CACHE_TIME)
         return Response(sorted_data)
+
+
+class ChatRoomViewSet(viewsets.ModelViewSet):
+    queryset = ChatRoom.objects.all()
+    serializer_class = ChatRoomSerializer
+
+
+class ChatMessageViewSet(viewsets.ModelViewSet):
+    queryset = ChatMessage.objects.all()
+    serializer_class = ChatMessageSerializer
+
+
+class ListBaraban(generics.ListAPIView):
+    queryset = models.BarabanDiscount.objects.all()
+    serializer_class = serializer.BarabanDiscountSerializer

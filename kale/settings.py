@@ -14,6 +14,7 @@ TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # DEBUG= True
 # SECURITY WARNING: don't run with debug turned on in production!
 import environ
+
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
 DEBUG = env.bool("DEBUG", True)
@@ -58,8 +59,20 @@ INSTALLED_APPS = [
     'django_cleanup',
     'rest_framework_simplejwt',
     'corsheaders',
-    'django_filters'
+    'django_filters',
+    'channels',
 ]
+
+ASGI_APPLICATION = 'myproject.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+    },
+}
+
 APPEND_SLASH = True
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=259200),
