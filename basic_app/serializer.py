@@ -48,7 +48,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class BestSellerProductSerializer(serializers.ModelSerializer):
-    # image = serializers.SerializerMethodField(source='image_urls')
 
     class Meta:
         model = Best_seller_products

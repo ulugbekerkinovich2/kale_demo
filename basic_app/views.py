@@ -718,3 +718,8 @@ class ListDiscount(generics.ListCreateAPIView):
 class ListOrders(generics.ListCreateAPIView):
     queryset = models.Orders.objects.all()
     serializer_class = serializer.OrdersSerializer
+
+
+class ListBestSeller(generics.ListAPIView):
+    queryset = models.Best_seller_products.objects.filter(best_seller_product=True)
+    serializer_class = serializer.BestSellerProductSerializer

@@ -8,7 +8,7 @@ from basic_app.models import Best_seller_products
 
 
 class Best_SellerAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'best_seller_product']
+    search_fields = ['name']
     # list_filter = ['name', 'best_seller_product']
     list_display = ['id', 'name']
     list_per_page = 10
@@ -50,6 +50,7 @@ class GallerPhotosAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.CustomUser)
+admin.site.register(models.Best_seller_products, Best_SellerAdmin)
 admin.site.register(models.Orders)
 admin.site.register(models.Discount)
 admin.site.register(models.Header_Carusel, Header_CaruselAdmin)
