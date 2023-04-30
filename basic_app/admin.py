@@ -11,7 +11,7 @@ class Best_SellerAdmin(admin.ModelAdmin):
     search_fields = ['name']
     # list_filter = ['name', 'best_seller_product']
     list_display = ['id', 'name']
-    list_per_page = 10
+    list_per_page = 500
 
 
 class ProductsAdmin(admin.ModelAdmin):
