@@ -486,7 +486,7 @@ class DetailGalleryNews(generics.RetrieveAPIView):
 
 
 class ListProductsByCategory1(generics.ListAPIView):
-    queryset = models.Product.objects.all()
+    queryset = models.Product.objects.all().order_by('-id')
     serializer_class = serializer.Product_By_CategorySerializer
 
     def list(self, request, *args, **kwargs):
