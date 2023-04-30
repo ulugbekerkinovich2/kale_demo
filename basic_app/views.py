@@ -812,3 +812,37 @@ class ProductsByCategoryView(APIView):
             })
 
         return JsonResponse(categories_data, safe=False)
+
+
+class ProductsByCategoryViewGetByCount(APIView):
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.order_by('-id')
+        categories_data = {}
+        for product in products:
+            category_name = product.category.name_ru
+            if category_name not in categories_data:
+                categories_data[category_name] = []
+            if len(categories_data[category_name]) <= 4: # Changed to <= 4 to get 5 objects
+                categories_data[category_name].append({
+                    'name_uz': product.name_uz,
+                    'name_en': product.name_en,
+                    'name_ru': product.name_ru,
+                    'description_uz': product.description_uz,
+                    'description_en': product.description_en,
+                    'description_ru': product.description_ru,
+                    'count': product.count,
+                    'code': product.code,
+                    'price': product.price,
+                    'image1': product.image1.url if product.image1 else None,
+                    'image2': product.image2.url if product.image2 else None,
+                    'image3': product.image3.url if product.image3 else None,
+                    'image4': product.image4.url if product.image4 else None,
+                    'image5': product.image5.url if product.image5 else None,
+                    'korzinka': product.korzinka,
+                    'saralangan': product.saralangan,
+                    'solishtirsh': product.solishtirsh,
+                    'best_seller_product': product.best_seller_product,
+                })
+            else:
+                continue
+        return JsonResponse(categories_data, safe=False)

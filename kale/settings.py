@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q'
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
-DEBUG= True
+# DEBUG= True
 # SECURITY WARNING: don't run with debug turned on in production!
 import environ
 env = environ.Env()
