@@ -492,13 +492,12 @@ class ListProductsByCategory1(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         cache_key = "products_by_category:all"
         data_all = cache.get(cache_key)
-        data_all = cache.get(cache_key)
         if data_all is not None:
             # Data is available in cache, return it
             return Response(data_all)
 
         # Data is not available in cache, fetch it from API or database
-        response = requests.get(url, auth=(username, password))
+        response = requests.get(url, auth=(username, password), params={'sort_by': '-id'})
         if response.status_code != 200:
             return Response({'error': 'Failed to fetch data from API'})
 
@@ -538,7 +537,8 @@ class ListProductsByCategory1(generics.ListAPIView):
                     pass
 
         # Bulk create the Product objects
-        Product.objects.bulk_create(products)
+        products_sorted = sorted(products, key=lambda p: p.id, reverse=True)
+        Product.objects.bulk_create(products_sorted)
 
         # Retrieve the Product queryset from the database and serialize the data
         queryset = Product.objects.all().order_by('-id')
