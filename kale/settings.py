@@ -11,13 +11,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-4kmwdm80^8162poac9wbu_yesbhn3uhpd(uzcaeke_ewt5&*3q'
 TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
-DEBUG= True
+# DEBUG= True
 # SECURITY WARNING: don't run with debug turned on in production!
-# import environ
-# env = environ.Env()
-# env.read_env(str(BASE_DIR / ".env"))
-# DEBUG = env.bool("DEBUG", True)
-# ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
+import environ
+env = environ.Env()
+env.read_env(str(BASE_DIR / ".env"))
+DEBUG = env.bool("DEBUG", True)
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
@@ -153,10 +153,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# if DEBUG is False:
-#     DATABASES["default"] = env.db("DATABASE_URL")
-#     DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
-#     DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+if DEBUG is False:
+    DATABASES["default"] = env.db("DATABASE_URL")
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
