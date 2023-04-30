@@ -8,22 +8,22 @@ from basic_app.models import Best_seller_products
 
 
 class Best_SellerAdmin(admin.ModelAdmin):
-    # search_fields = ['name']
+    search_fields = ['name_en']
     # list_filter = ['name', 'best_seller_product']
     list_display = ['id']
     list_per_page = 500
 
 
 class ProductsAdmin(admin.ModelAdmin):
-    search_fields = ['code']
+    search_fields = ['code', 'name_ru']
     # list_filter = ['category']
-    list_display = ['id']
+    list_display = ['id', 'name_ru']
     # list_filter = ['category']
     list_per_page = 20
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    search_fields = ['id']
+    search_fields = ['id', 'name_ru']
     # list_filter = ['name']
     # list_filter = ['name']
     list_display = ['id']
@@ -31,7 +31,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class Header_CaruselAdmin(admin.ModelAdmin):
-    # search_fields = ['id', 'nomi']
+    search_fields = ['id', 'nomi_ru']
     # list_filter = ['nomi']
     # list_filter = ['nomi']
     list_display = ['id']
