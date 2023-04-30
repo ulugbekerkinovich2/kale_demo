@@ -541,7 +541,7 @@ class ListProductsByCategory1(generics.ListAPIView):
         Product.objects.bulk_create(products)
 
         # Retrieve the Product queryset from the database and serialize the data
-        queryset = Product.objects.all()
+        queryset = Product.objects.all().order_by('-id')
         serializer_ = self.get_serializer(queryset, many=True)
 
         # Store the serialized data in cache and return it
@@ -550,12 +550,13 @@ class ListProductsByCategory1(generics.ListAPIView):
 
 
 class ListProductsByCategory122(generics.ListAPIView):
-    queryset = models.Product.objects.all().order_by('-id')
+    queryset = models.Product.objects.all()
     serializer_class = serializer.Product_By_CategorySerializer
 
     def list(self, request, *args, **kwargs):
         cache_key = "products_by_category:all"
         data_all = cache.get(cache_key)
+
         if data_all is not None:
             # Data is available in cache, return it
             return Response(data_all)
@@ -569,7 +570,7 @@ class ListProductsByCategory122(generics.ListAPIView):
         json_data = response.json()
         products_data = json_data.get('Товары', [])
         updated_products = []
-        unupdated_products = []
+        last_products = []
         for product_data in products_data:
             category_name = product_data.get('Категория', '').strip()
             if category_name:
@@ -613,19 +614,21 @@ class ListProductsByCategory122(generics.ListAPIView):
                                       solishtirsh=product_data.get('solishtirsh', False),
                                       best_seller_product=product_data.get('best_seller_product', False))
                     product.save()
-                    unupdated_products.append(product)
+                    last_products.append(product)
                 except MultipleObjectsReturned:
                     pass
 
-        # Serialize the updated and un-updated products and return them in separate arrays
+                    # Serialize the updated and un-updated products and return them in separate arrays
         updated_serializer = self.get_serializer(updated_products, many=True)
-        unupdated_serializer = self.get_serializer(unupdated_products, many=True)
+        unupdated_serializer = self.get_serializer(last_products, many=True)
         data = {
             'updated_products': updated_serializer.data,
             'unupdated_products': unupdated_serializer.data}
-        # return Response(data)
 
+        # Save the data to cache
         cache.set(cache_key, data, timeout=settings.CACHE_TIME)
+
+        # Return the data
         return Response(data)
 
 

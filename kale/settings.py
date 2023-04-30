@@ -42,7 +42,7 @@ CACHES = {
     }
 }
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
-CACHE_TIME = 600000
+CACHE_TIME = 21600
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
@@ -155,10 +155,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# if DEBUG is False:
-#     DATABASES["default"] = env.db("DATABASE_URL")
-#     DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
-#     DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+if DEBUG is False:
+    DATABASES["default"] = env.db("DATABASE_URL")
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
+    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
