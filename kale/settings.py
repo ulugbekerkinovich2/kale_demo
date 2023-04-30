@@ -14,7 +14,6 @@ TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 # DEBUG= True
 # SECURITY WARNING: don't run with debug turned on in production!
 import environ
-
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
 DEBUG = env.bool("DEBUG", True)

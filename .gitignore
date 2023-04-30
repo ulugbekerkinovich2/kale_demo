@@ -120,6 +120,10 @@ converts.py
 # sftp configuration file
 sftp-config.json 
 media
+db.sqlite3
+db.py
+image_save.py
+converts.py
 # Package control specific files Package 
 Control.last-run 
 Control.ca-list 
