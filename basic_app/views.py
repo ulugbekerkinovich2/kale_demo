@@ -485,7 +485,7 @@ class DetailGalleryNews(generics.RetrieveAPIView):
     serializer_class = serializer.GalleryNewsSerializer
 
 
-class ListProductsByCategory1(generics.ListAPIView):
+class ListProductsByCategorys(generics.ListAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializer.Product_By_CategorySerializer
 
@@ -549,12 +549,13 @@ class ListProductsByCategory1(generics.ListAPIView):
         return Response(serializer_.data)
 
 
-class ListProductsByCategory122(generics.ListAPIView):
-    queryset = models.Product.objects.all().order_by('-id')
+class ListProductsByCategory1(generics.ListAPIView):
+    queryset = models.Product.objects.all()
     serializer_class = serializer.Product_By_CategorySerializer
 
     def list(self, request, *args, **kwargs):
         cache_key = "products_by_category:all"
+        data_all = cache.get(cache_key)
         data_all = cache.get(cache_key)
         if data_all is not None:
             # Data is available in cache, return it
@@ -568,8 +569,7 @@ class ListProductsByCategory122(generics.ListAPIView):
         # Process the data and create Product objects
         json_data = response.json()
         products_data = json_data.get('Товары', [])
-        updated_products = []
-        unupdated_products = []
+        products = []
         for product_data in products_data:
             category_name = product_data.get('Категория', '').strip()
             if category_name:
@@ -580,22 +580,7 @@ class ListProductsByCategory122(generics.ListAPIView):
                     category = Category.objects.create(name=category_name)
                 product_name = product_data.get('Наименование')
                 try:
-                    product = Product.objects.get(name=product_name, category=category)
-                    product.description = product_data['Описание']
-                    product.price = product_data['Цена']
-                    product.code = product_data['Код']
-                    product.count = product_data['Остаток']
-                    product.image1 = product_data.get('image1', 'None')
-                    product.image2 = product_data.get('image2', 'None')
-                    product.image3 = product_data.get('image3', 'None')
-                    product.image4 = product_data.get('image4', 'None')
-                    product.image5 = product_data.get('image5', 'None')
-                    product.korzinka = product_data.get('korzinka', False)
-                    product.saralangan = product_data.get('saralangan', False)
-                    product.solishtirsh = product_data.get('solishtirsh', False)
-                    product.best_seller_product = product_data.get('best_seller_product', False)
-                    product.save()
-                    updated_products.append(product)
+                    category = Product.objects.get(name=product_name, category=category)
                 except ObjectDoesNotExist:
                     product = Product(name=product_name,
                                       description=product_data['Описание'],
@@ -612,21 +597,20 @@ class ListProductsByCategory122(generics.ListAPIView):
                                       saralangan=product_data.get('saralangan', False),
                                       solishtirsh=product_data.get('solishtirsh', False),
                                       best_seller_product=product_data.get('best_seller_product', False))
-                    product.save()
-                    unupdated_products.append(product)
+                    products.append(product)
                 except MultipleObjectsReturned:
                     pass
 
-        # Serialize the updated and un-updated products and return them in separate arrays
-        updated_serializer = self.get_serializer(updated_products, many=True)
-        unupdated_serializer = self.get_serializer(unupdated_products, many=True)
-        data = {
-            'updated_products': updated_serializer.data,
-            'unupdated_products': unupdated_serializer.data}
-        # return Response(data)
+        # Bulk create the Product objects
+        Product.objects.bulk_create(products)
 
-        cache.set(cache_key, data, timeout=settings.CACHE_TIME)
-        return Response(data)
+        # Retrieve the Product queryset from the database and serialize the data
+        queryset = Product.objects.all().order_by('-id')
+        serializer_ = self.get_serializer(queryset, many=True)
+
+        # Store the serialized data in cache and return it
+        cache.set(cache_key, serializer_.data, timeout=settings.CACHE_TIME)
+        return Response(serializer_.data)
 
 
 class DetailProductsByCategory1(generics.RetrieveAPIView):
