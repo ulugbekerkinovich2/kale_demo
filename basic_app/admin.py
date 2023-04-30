@@ -8,7 +8,7 @@ from basic_app.models import Best_seller_products
 
 
 class Best_SellerAdmin(admin.ModelAdmin):
-    search_fields = ['name_en']
+    search_fields = ['name_ru']
     # list_filter = ['name', 'best_seller_product']
     list_display = ['id']
     list_per_page = 500
