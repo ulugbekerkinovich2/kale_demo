@@ -15,7 +15,7 @@ class Best_SellerAdmin(admin.ModelAdmin):
 
 
 class ProductsAdmin(admin.ModelAdmin):
-    search_fields = ['code', 'name_ru']
+    search_fields = ['id', 'name_ru']
     # list_filter = ['category']
     list_display = ['id', 'name_ru']
     # list_filter = ['category']
