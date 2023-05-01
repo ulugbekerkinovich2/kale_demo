@@ -157,8 +157,6 @@ class Category(models.Model):
         return self.name_ru
 
 
-
-
 class Product(models.Model):
     name_uz = models.CharField(max_length=255, null=True, blank=True)
     name_en = models.CharField(max_length=255, null=True, blank=True)
@@ -182,6 +180,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name_ru
+
+    class Meta:
+        verbose_name_plural = 'Product'
 
 
 class Form(models.Model):
