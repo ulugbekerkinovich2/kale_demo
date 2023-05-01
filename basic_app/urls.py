@@ -28,7 +28,7 @@ urlpatterns = [
     path('products_by_category/<int:pk>/', views.DetailProductsByCategory1.as_view()),
     path('baraban/', views.ListBaraban.as_view()),
     path('products_by_category/', views.ListProductsByCategoryName.as_view()),
-    path('products_by_categorys/', views.ListProductsByCategoryName.as_view()),
+    path('products_by_categorys/', views.ListProductsByCategoryNameNew.as_view()),
     path('orders/', views.ListOrders.as_view()),
     path('discount/', views.ListDiscount.as_view()),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

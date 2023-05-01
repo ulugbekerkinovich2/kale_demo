@@ -749,6 +749,82 @@ class ListProductsByCategoryName(generics.ListAPIView):
         return Response(sorted_data)
 
 
+class ListProductsByCategoryNameNew(generics.ListAPIView):
+    queryset = models.Product.objects.all().order_by('-id')
+    serializer_class = serializer.Product_By_CategorySerializer
+
+    def list(self, request, *args, **kwargs):
+        cache_key = "products_by_category:all"
+        data_all = cache.get(cache_key)
+        if data_all is not None:
+            # Group the data by category name and return it
+            sorted_data = {}
+            for item in data_all:
+                category_name = item['category_name']
+                if category_name not in sorted_data:
+                    sorted_data[category_name] = []
+                sorted_data[category_name].append(item)
+            return Response(sorted_data)
+
+        # Data is not available in cache, fetch it from API or database
+        response = requests.get(url, auth=(username, password), params={'sort_by': '-id'})
+        if response.status_code != 200:
+            return Response({'error': 'Failed to fetch data from API'})
+
+        # Process the data and create Product objects
+        json_data = response.json()
+        products_data = json_data.get('Товары', [])
+        products = []
+        for product_data in products_data:
+            category_name = product_data.get('Категория', '').strip()
+            if category_name:
+                name_category = Category.objects.filter(name_ru=category_name)
+                if name_category.exists():
+                    category = name_category.first()
+                else:
+                    category = Category.objects.create(name_ru=category_name)
+                product_name = product_data.get('Наименование')
+                try:
+                    category = Product.objects.get(name_ru=product_name, category=category)
+                except ObjectDoesNotExist:
+                    product = Product(name_ru=product_name,
+                                      description_ru=product_data['Описание'],
+                                      price=product_data['Цена'],
+                                      category=category,
+                                      code=product_data['Код'],
+                                      count=product_data['Остаток'],
+                                      image1=product_data.get('image1', 'None'),
+                                      image2=product_data.get('image2', 'None'),
+                                      image3=product_data.get('image3', 'None'),
+                                      image4=product_data.get('image4', 'None'),
+                                      image5=product_data.get('image5', 'None'),
+                                      korzinka=product_data.get('korzinka', False),
+                                      saralangan=product_data.get('saralangan', False),
+                                      solishtirsh=product_data.get('solishtirsh', False),
+                                      best_seller_product=product_data.get('best_seller_product', False))
+                    products.append(product)
+                except MultipleObjectsReturned:
+                    pass
+
+        # Bulk create the Product objects
+        # products_sorted = sorted(products, key=lambda p: p.id, reverse=True)
+        Product.objects.bulk_create(products)
+
+        # Retrieve the Product queryset from the database and group the data by category name
+        queryset = Product.objects.all().order_by('-id')
+        sorted_data = {}
+        for item in queryset:
+            category_name = item.category.name_ru
+            if category_name not in sorted_data:
+                sorted_data[category_name] = []
+            serializer_ = self.get_serializer(item)
+            sorted_data[category_name].append(serializer_.data)
+
+        # Store the serialized data in cache and return it
+        cache.set(cache_key, sorted_data, timeout=settings.CACHE_TIME)
+        return Response(sorted_data)
+
+
 class ChatRoomViewSet(viewsets.ModelViewSet):
     queryset = ChatRoom.objects.all()
     serializer_class = ChatRoomSerializer
