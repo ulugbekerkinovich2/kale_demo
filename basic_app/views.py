@@ -750,11 +750,11 @@ class ListProductsByCategoryName(generics.ListAPIView):
 
 
 class ListProductsByCategoryNameNew(generics.ListAPIView):
-    queryset = models.Product.objects.all().order_by('-id')
+    queryset = models.ProductNew.objects.all().order_by('-id')
     serializer_class = serializer.Product_By_CategorySerializer
 
     def list(self, request, *args, **kwargs):
-        cache_key = "products_by_category:all"
+        cache_key = "products_by_category:all_"
         data_all = cache.get(cache_key)
         if data_all is not None:
             # Group the data by category name and return it

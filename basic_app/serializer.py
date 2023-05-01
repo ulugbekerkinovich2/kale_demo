@@ -141,7 +141,7 @@ class ProductSerializer1(serializers.ModelSerializer):
                   'category_name']
 
     def get_category_name(self, obj):
-        return obj.category.name_en if obj.category else None
+        return obj.category.name_ru if obj.category else None
 
 
 class AboutSerializer(serializers.ModelSerializer):
