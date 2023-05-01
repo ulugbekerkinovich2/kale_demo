@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 
+
 # Create your models here.
 
 #
@@ -149,7 +150,7 @@ class Best_seller_products(models.Model):
 
 
 class Category(models.Model):
-    name_uz = models.CharField(max_length=255, default='none', null=True, blank=True)
+    name_uz = models.CharField(max_length=255, default='none')
     name_ru = models.CharField(max_length=255, default='none', null=True, blank=True)
     name_en = models.CharField(max_length=255, default='none', null=True, blank=True)
 
@@ -159,20 +160,15 @@ class Category(models.Model):
 
 class Product(models.Model):
     name_uz = models.CharField(max_length=255, default='name kiritilmagan')
-    name_en = models.CharField(max_length=255, default='name kiritilmagan')
-    name_ru = models.CharField(max_length=255, default='name kiritilmagan')
-    description_uz = models.TextField(null=True, blank=True)
+    name_en = models.CharField(max_length=255, default='name kiritilmagan', null=True, blank=True)
+    name_ru = models.CharField(max_length=255, default='name kiritilmagan', null=True, blank=True)
+    description_uz = models.TextField()
     description_en = models.TextField(null=True, blank=True)
     description_ru = models.TextField(null=True, blank=True)
     count = models.CharField(max_length=20, default='0')
     code = models.CharField(max_length=30, default='mahsulot kodi kiritilmagan', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
-    image1 = models.ImageField(upload_to='images/', null=True, blank=True)
-    image2 = models.ImageField(upload_to='images/', null=True, blank=True)
-    image3 = models.ImageField(upload_to='images/', null=True, blank=True)
-    image4 = models.ImageField(upload_to='images/', null=True, blank=True)
-    image5 = models.ImageField(upload_to='images/', null=True, blank=True)
     korzinka = models.BooleanField(default=False)
     saralangan = models.BooleanField(default=False)
     solishtirsh = models.BooleanField(default=False)

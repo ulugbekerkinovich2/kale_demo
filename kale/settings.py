@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'channels',
+    "gayrat",
 ]
 
 ASGI_APPLICATION = 'myproject.asgi.application'

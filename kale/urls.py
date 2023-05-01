@@ -7,10 +7,12 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from basic_app.views import ChatRoomViewSet, ChatMessageViewSet
+from gayrat.views import ProductViewSets
 
 router = routers.DefaultRouter()
 router.register('chatrooms/', ChatRoomViewSet)
 router.register('chatmessages/', ChatMessageViewSet)
+router.register('gayrat', ProductViewSets)
 schema_view = get_schema_view(
     openapi.Info(
         title="Kale application programming interface",

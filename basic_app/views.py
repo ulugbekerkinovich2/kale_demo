@@ -417,34 +417,34 @@ class ListProductsByCategory(generics.ListAPIView):
             products = []
             for product_data in products_data:
                 category_name = product_data.get('Категория', '').strip()
-                if category_name:
-                    name_category = Category.objects.filter(name=category_name)
-                    if name_category.exists():
-                        category = name_category.first()
-                    else:
-                        category = Category.objects.create(name=category_name)
-                    product_name = product_data.get('Наименование')
-                    try:
-                        category = Product.objects.get(name=product_name, category=category)
-                    except ObjectDoesNotExist:
-                        product = Product(name=product_name,
-                                          description=product_data['Описание'],
-                                          price=product_data['Цена'],
-                                          category=category,
-                                          code=product_data['Код'],
-                                          count=product_data['Остаток'],
-                                          image1=product_data.get('image1', 'None'),
-                                          image2=product_data.get('image2', 'None'),
-                                          image3=product_data.get('image3', 'None'),
-                                          image4=product_data.get('image4', 'None'),
-                                          image5=product_data.get('image5', 'None'),
-                                          korzinka=product_data.get('korzinka', False),
-                                          saralangan=product_data.get('saralangan', False),
-                                          solishtirsh=product_data.get('solishtirsh', False),
-                                          best_seller_product=product_data.get('best_seller_product', False))
-                        products.append(product)
-                    except MultipleObjectsReturned:
-                        pass
+                # if category_name:
+                #     name_category = Category.objects.filter(name=category_name)
+                #     if name_category.exists():
+                #         category = name_category.first()
+                #     else:
+                #         category = Category.objects.create(name=category_name)
+                #     product_name = product_data.get('Наименование')
+                #     try:
+                #         category = Product.objects.get(name=product_name, category=category)
+                #     except ObjectDoesNotExist:
+                #         product = Product(name=product_name,
+                #                           description=product_data['Описание'],
+                #                           price=product_data['Цена'],
+                #                           category=category,
+                #                           code=product_data['Код'],
+                #                           count=product_data['Остаток'],
+                #                           image1=product_data.get('image1', 'None'),
+                #                           image2=product_data.get('image2', 'None'),
+                #                           image3=product_data.get('image3', 'None'),
+                #                           image4=product_data.get('image4', 'None'),
+                #                           image5=product_data.get('image5', 'None'),
+                #                           korzinka=product_data.get('korzinka', False),
+                #                           saralangan=product_data.get('saralangan', False),
+                #                           solishtirsh=product_data.get('solishtirsh', False),
+                #                           best_seller_product=product_data.get('best_seller_product', False))
+                #         products.append(product)
+                #     except MultipleObjectsReturned:
+                #         pass
             Product.objects.bulk_create(products)
             queryset = Product.objects.all()
             cache.set(cache_key, queryset, timeout=settings.CACHE_TIME)
