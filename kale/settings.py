@@ -16,7 +16,7 @@ TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 import environ
 env = environ.Env()
 env.read_env(str(BASE_DIR / ".env"))
-DEBUG = env.bool("DEBUG", False)
+DEBUG = env.bool("DEBUG", True)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
