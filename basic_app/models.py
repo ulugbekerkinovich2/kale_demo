@@ -158,9 +158,9 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name_uz = models.CharField(max_length=255, null=True, blank=True)
-    name_en = models.CharField(max_length=255, null=True, blank=True)
-    name_ru = models.CharField(max_length=255, null=True, blank=True)
+    name_uz = models.CharField(max_length=255, default='name kiritilmagan')
+    name_en = models.CharField(max_length=255, default='name kiritilmagan')
+    name_ru = models.CharField(max_length=255, default='name kiritilmagan')
     description_uz = models.TextField(null=True, blank=True)
     description_en = models.TextField(null=True, blank=True)
     description_ru = models.TextField(null=True, blank=True)
