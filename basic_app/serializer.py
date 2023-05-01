@@ -62,14 +62,16 @@ class BestSellerProductSerializer(serializers.ModelSerializer):
 
 
 class Product_By_CategorySerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source='category.name', read_only=True)
+    category_name_ru = serializers.CharField(source='category.name_ru', read_only=True)
+    category_name_uz = serializers.CharField(source='category.name_uz', read_only=True)
+    category_name_en = serializers.CharField(source='category.name_en', read_only=True)
 
     class Meta:
         model = Product
         fields = (
-            'id', 'name_en', 'name_ru', 'name_uz', 'description_uz', 'description_ru', 'description_en', 'price',
+            'id', 'name_uz', 'name_en', 'name_ru', 'description_uz', 'description_ru', 'description_en', 'price',
             'image1', 'image2', 'image3', 'image4', 'image5',
-            'korzinka', 'saralangan', 'code', 'count', 'category_name',
+            'korzinka', 'saralangan', 'code', 'count', 'category_name_uz', 'category_name_ru', 'category_name_en',
             'solishtirsh', 'best_seller_product')
 
     def get_image(self, obj):
@@ -82,7 +84,7 @@ class Product_By_CategorySerializer(serializers.ModelSerializer):
 class Category_Serailzier(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ('id', 'name_uz', 'name_ru', 'name_en')
 
 
 class FormSerializer(serializers.ModelSerializer):
