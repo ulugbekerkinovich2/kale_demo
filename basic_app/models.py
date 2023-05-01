@@ -157,15 +157,6 @@ class Category(models.Model):
         return self.name_ru
 
 
-# class User(models.Model):
-#     username = models.CharField(max_length=255, null=False)
-#     phone_number = models.CharField(max_length=255, null=False)
-#     password = models.CharField(max_length=50)
-#     ifLogged = models.BooleanField(default=False)
-#     token = models.CharField(max_length=500, null=True, default="")
-#
-#     def __str__(self):
-#         return self.phone_number
 
 
 class Product(models.Model):
